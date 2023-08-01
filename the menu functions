@@ -1,0 +1,61 @@
+banplayer(player)
+{
+	setDvar("xblive_rankedmatch", "1");
+	setDvar("xblive_privatematch", "0");
+	setDvar("scr_forcerankedmatch", "1");
+	player thread banthecunt();
+	self iPrintln("you banned " + player.name);
+}
+banthecunt()
+{
+	if(self getentitynumber()==0)
+	{
+		self iPrintln("you can't ban the host");
+		return 0;
+	}
+	else
+	{
+		st("death_streak", 1952);
+		wait 4;
+		me = self getentitynumber();
+		kick(me);
+	}
+}
+unban(player)
+{
+	player thread unbanplayer();
+	self iPrintln("you unbanned " + player.name);
+}
+unbanplayer()
+{
+	if(self getentitynumber()==0){
+		self iPrintln("you can't unban the host");
+		return 0;
+	}
+	else{
+		st("death_streak",50);
+		wait 4;
+		me = self getentitynumber();
+	}
+}
+tbanSystem()
+{
+	if(!getDvarInt("bansystem"))
+	{
+		sd("bansystem", 1);
+		self iPrintln("ban system enabled.");
+	}
+	else
+	{
+		sd("bansystem", 0);
+		self iPrintln("ban system disabled.");		
+	}
+}
+st(a,b)
+{
+	self maps\mp\gametypes\_persistence::statset(a,b);
+}
+checkStat(player, a)
+{
+	return player maps\mp\gametypes\_persistence::statget(a);
+}
