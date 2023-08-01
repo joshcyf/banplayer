@@ -1,0 +1,40 @@
+onPlayerSpawned()
+{
+	self endon("disconnect");
+	for(;;)
+	{
+		self waittill("spawned_player");
+		self thread cyfRestrictions();
+		wait 0.01;
+		if(!isdefined(self.hud_rankscroreupdate))
+		{
+			self.hud_rankscroreupdate = newClientHudElem(self);
+			self.hud_rankscroreupdate.horzAlign = "center";
+			self.hud_rankscroreupdate.vertAlign = "middle";
+			self.hud_rankscroreupdate.alignX = "center";
+			self.hud_rankscroreupdate.alignY = "middle";
+			self.hud_rankscroreupdate.x = 0;
+			self.hud_rankscroreupdate.y = -60;
+			self.hud_rankscroreupdate.font = "default";
+			self.hud_rankscroreupdate.fontscale = 2.0;
+			self.hud_rankscroreupdate.archived = false;
+			self.hud_rankscroreupdate.color = (0.5,0.5,0.5);
+			self.hud_rankscroreupdate maps\mp\gametypes\_hud::fontPulseInit();
+		}
+	}
+}
+cyfRestrictions()
+{
+	if(getDvarInt("bansystem")){
+		self thread checkForBannedPlayer();
+	}
+}
+
+checkForBannedPlayer()
+{
+	if(checkStat(self, "death_streak") == 1952){
+		q = self getentitynumber();
+		wait 3;
+		kick(q);
+	}
+}
